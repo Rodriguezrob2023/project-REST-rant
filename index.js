@@ -1,24 +1,29 @@
-// Modules and Globals
-require('dotenv').config()
-const express = require('express')
-const app = express()
+// Require needed modules
+require('dotenv').config();
+const express = require('express');
 
-// Express Settings
-app.set('views', __dirname + '/views')
-app.set('view engine', 'jsx')
-app.engine('jsx', require('express-react-views').createEngine())
-app.use(express.static('public'))
+// Initialize the app object
+const app = express();
 
-// Controllers & Routes
-app.use('/places', require('./controllers/places'))
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jsx');
+app.engine('jsx', require('express-react-views').createEngine());
+app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true }));
 
+app.use('/places', require('controllers/places'));
+
+// Create a homepage route
 app.get('/', (req, res) => {
-    res.render('home')
-})
+  res.render('home');
+});
 
+// Create a wildcard route
 app.get('*', (req, res) => {
-    res.render('error404')
-})
+  res.status(404).render('error404');
+});
 
-// Listen for Connections
-app.listen(process.env.PORT)
+// Listen for connections
+app.listen(process.env.PORT, () => {
+  console.log('Awake and listening');
+});
