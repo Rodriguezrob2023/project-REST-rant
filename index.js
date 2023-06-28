@@ -12,7 +12,7 @@ app.engine('jsx', require('express-react-views').createEngine());
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/places', require('controllers/places'));
+app.use('/places', require('./controllers/places'))
 
 // Create a homepage route
 app.get('/', (req, res) => {
