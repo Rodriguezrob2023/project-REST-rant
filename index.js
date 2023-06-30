@@ -1,34 +1,28 @@
 // Modules and Globals
-require('dotenv').config()
 const express = require('express')
+const app = express()
+const dotenv = require('dotenv')
 const methodOverride = require('method-override')
+// Load environment variables from .env file
+dotenv.config()
 
-
-// Initialize the app object
-const app = express();
-
-app.set('views', __dirname + '/views');
-app.set('view engine', 'jsx');
-app.engine('jsx', require('express-react-views').createEngine());
-app.use(express.static('public'));
-app.use(express.urlencoded({ extended: true }));
+// Express Settings
+app.set('views', __dirname + '/views')
+app.set('view engine', 'jsx')
+app.engine('jsx', require('express-react-views').createEngine())
+app.use(express.static('public'))
+app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
+
+app.get('/', (req, res) => {
+  res.render('home')
+})
 app.use('/places', require('./controllers/places'))
 
-// Create a homepage route
-app.get('/', (req, res) => {
-  res.render('home');
-});
-
-// Create a route
+// Error 404 page
 app.get('*', (req, res) => {
-  res.status(404).render('error404');
-});
-
-//Listen for connections
-app.listen(process.env.PORT, () => {
-  console.log(`http://localhost:${process.env.PORT}`)
-  console.log(`http://localhost:${process.env.PORT}/places`)
-  console.log(`http://localhost:${process.env.PORT}/404test`)
-  console.log(`http://localhost:${process.env.PORT}/places/new`)
+  res.render('error404')
 })
+
+// Listen for Connections
+app.listen(process.env.PORT)
